@@ -229,6 +229,190 @@ Forti2 (Servidor)
 
 <img width="871" height="732" alt="image" src="https://github.com/user-attachments/assets/26d76200-7862-49e9-8f47-0edc1f135b2c" />
 
+Configuré rutas estáticas para que los dispositivos sepan como dirigirse por los túneles VPN creados:
 
+Forti1 (Usuarios)
+
+<img width="1281" height="135" alt="image" src="https://github.com/user-attachments/assets/7423579b-9b7f-4e5a-a5c3-d7b3cc8789dd" />
+
+Forti2 (Servidor)
+
+<img width="1277" height="82" alt="image" src="https://github.com/user-attachments/assets/00f53c64-3cbb-440b-8ace-81e5bc4c4227" />
+
+También he configurado algunas políticas para permitir el acceso de lado a lado a través de los túneles, representado por el puerto que lleva a la red interna y la red remota.
+
+Forti1 (Usuarios), las primeras dos políticas son requisitos de red, para la conexión VPN las otras dos son las que interesan más: 
+
+<img width="1590" height="376" alt="image" src="https://github.com/user-attachments/assets/810c2dbc-3796-4f7e-89e9-006a118a3a9e" />
+
+Forti2 (Servidor)
+
+<img width="1572" height="246" alt="image" src="https://github.com/user-attachments/assets/3fc67f8d-0926-4c68-88fc-19225d83cdce" />
+
+Como se pueden ver, muchas de estas configuraciones se mantienen prácticamente iguales, solos se cambian algunos datos dependiendo del lado de la conexión al que pertenezcan, con esto fui capaz completar los objetivos de la práctica y lo muestro en el vídeo al principio del repositorio.
+
+### Running-Config ###
+
+## ISP ##
+
+ISP#show running-config
+
+Building configuration...
+
+Current configuration : 1852 bytes
+
+! Last configuration change at 04:54:02 UTC Tue Sep 29 2026
+
+version 15.2
+
+service timestamps debug datetime msec
+
+service timestamps log datetime msec
+
+service password-encryption
+
+hostname ISP
+
+boot-start-marker
+
+boot-end-marker
+
+enable secret 5 $1$wCxD$im3GOK8RfYT9LJHWglwKU.
+
+no aaa new-model
+
+no ip icmp rate-limit unreachable
+
+no ip domain lookup
+
+ip domain name laboratorio.local
+
+ip cef
+
+no ipv6 cef
+
+multilink bundle-name authenticated
+
+username admin secret 5 $1$qBjj$/UOWQWOdX9.xc.DRQfwo..
+
+ip tcp synwait-time 5
+
+interface FastEthernet0/0
+
+ no ip address
+ 
+ shutdown
+ 
+ duplex full
+
+interface GigabitEthernet1/0
+
+ description ISP-Forti1
+ 
+ ip address 200.78.7.1 255.255.255.252
+ 
+ negotiation auto
+
+interface GigabitEthernet2/0
+
+ description ISP a Forti2
+ 
+ ip address 200.78.7.5 255.255.255.252
+ 
+ negotiation auto
+
+interface GigabitEthernet3/0
+
+ no ip address
+ 
+ shutdown
+ 
+ negotiation auto
+
+interface Serial4/0
+
+ no ip address
+ 
+ shutdown
+ 
+ serial restart-delay 0
+
+interface Serial4/1
+
+ no ip address
+ 
+ shutdown
+ 
+ serial restart-delay 0
+
+interface Serial4/2
+
+ no ip address
+ 
+ shutdown
+ 
+ serial restart-delay 0
+
+interface Serial4/3
+
+ no ip address
+ 
+ shutdown
+ 
+ serial restart-delay 0
+
+interface FastEthernet5/0
+
+ no ip address
+ 
+ shutdown
+ 
+ duplex full
+
+interface FastEthernet6/0
+
+ no ip address
+ shutdown
+ 
+ duplex full
+
+ip forward-protocol nd
+
+no ip http server
+no ip http secure-server
+ip route 10.78.7.0 255.255.255.128 200.78.7.2
+ip route 10.78.7.128 255.255.255.240 200.78.7.6
+
+control-plane
+
+banner motd ^C Acceso restringido: solo personal autorizado por Airam Brazoban ^C
+
+line con 0
+
+ exec-timeout 0 0
+ 
+ privilege level 15
+ 
+ logging synchronous
+ 
+ stopbits 1
+ 
+line aux 0
+
+ exec-timeout 0 0
+ 
+ privilege level 15
+ 
+ logging synchronous
+ 
+ stopbits 1
+ 
+line vty 0 4
+
+ login local
+ 
+ transport input ssh
+
+end
 
 

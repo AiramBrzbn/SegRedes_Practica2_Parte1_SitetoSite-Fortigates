@@ -170,7 +170,7 @@ end
 
 #### Servidor Web ####
 
-# IP fija
+#IP fija
 
 ip addr add 10.78.7.130/28 dev ens3
 
@@ -206,6 +206,28 @@ ip route 10.78.7.0 255.255.255.128 200.78.7.2
 ! Red de servidores detrás de Forti2
 
 ip route 10.78.7.128 255.255.255.240 200.78.7.6
+
+Ahora pasaremos a ver lo configurado en la GUI de los Fortigates, la mayoría de estas configuraciones serán hechas en ambos, solo que modificadas para su red en especifico y su lado del túnel VPN. 
+
+Como primer paso, para facilitar mis configuraciones hice en cada Fortigate unos objetos representando la red de Usuarios y Servidores:
+
+Forti1
+
+<img width="1426" height="85" alt="image" src="https://github.com/user-attachments/assets/7420bcfa-4fde-4e4b-9a9e-0a46c893a49e" />
+
+Forti2
+
+<img width="1382" height="82" alt="image" src="https://github.com/user-attachments/assets/0b50e435-3afe-40e3-8ee4-8b4c2967fc3c" />
+
+Luego realicé túneles VPN utilizando como red las interfaces públicas de cada Fortigate, configuré la seguridad, y en la fase 2 especifiqué las redes locales y remotas dependiendo del fortigate:
+
+Forti1 (Usuarios)
+
+<img width="827" height="747" alt="image" src="https://github.com/user-attachments/assets/28c47c1c-a7f3-4ffd-beae-2f3ef66d8922" />
+
+Forti2 (Servidor)
+
+<img width="871" height="732" alt="image" src="https://github.com/user-attachments/assets/26d76200-7862-49e9-8f47-0edc1f135b2c" />
 
 
 
